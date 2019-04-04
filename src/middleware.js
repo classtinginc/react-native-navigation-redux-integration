@@ -12,8 +12,8 @@ export const navigatorMiddleware = store => next => action => {
   }
   const navigator = getNavigator();
   const state = store.getState();
-  const {navigation} = state;
-  invariant(navigation, "You probably didn't import and apply navigation reducer");
+  const {activities} = state;
+  invariant(activities, "You probably didn't import and apply activities reducer");
   switch (action.type) {
     case middlewareActionTypes.push:
       {
@@ -25,12 +25,12 @@ export const navigatorMiddleware = store => next => action => {
           let nextActiveIndex;
           if (bottomTabIndex !== undefined) {
             tabsId = getActiveBottomTabsId(state);
-            activeScreenId = getActiveScreenOfTab(navigation.root, tabsId, bottomTabIndex);
+            activeScreenId = getActiveScreenOfTab(activities.root, tabsId, bottomTabIndex);
             nextActiveIndex = bottomTabIndex;
           }
           if (topTabIndex !== undefined) {
             tabsId = getActiveTopTabsId(state);
-            activeScreenId = getActiveScreenOfTab(navigation.root, tabsId, topTabIndex);
+            activeScreenId = getActiveScreenOfTab(activities.root, tabsId, topTabIndex);
             nextActiveIndex = topTabIndex;
           }
           navigator.mergeOptions(tabsId, {
@@ -60,7 +60,7 @@ export const navigatorMiddleware = store => next => action => {
       }
     case middlewareActionTypes.dismissLastModal:
       {
-        const modals = navigation.modals;
+        const modals = activities.modals;
         if (!modals || !modals.length) 
           return;
         const activeScreenId = getActiveComponentId(modals[modals.length - 1]);
