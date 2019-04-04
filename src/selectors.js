@@ -1,4 +1,4 @@
-import {LayoutType} from './constants';
+import {LayoutType, STATE_NAME} from './constants';
 import {isComponentOfType, getActiveChildrens, getSideMenuChildrenId} from './helpers';
 
 /**
@@ -7,21 +7,21 @@ import {isComponentOfType, getActiveChildrens, getSideMenuChildrenId} from './he
  * @returns {string} Id of active screen's component
  */
 export const getActiveScreenId = (state) => {
-  const activeScreenArray = state.navigation.activeScreenArray;
+  const activeScreenArray = state.activities.activeScreenArray;
   return activeScreenArray[0];
 }
 
 const getActiveIdForType = (state, type) => {
-  const activeScreenArray = state.navigation.activeScreenArray;
-  return activeScreenArray.find(component => isComponentOfType(state.navigation.root, component, type)) || (state.navigation.modals.length
-    ? activeScreenArray.find(component => isComponentOfType(state.navigation.modals, component, type))
+  const activeScreenArray = state.activities.activeScreenArray;
+  return activeScreenArray.find(component => isComponentOfType(state.activities.root, component, type)) || (state.activities.modals.length
+    ? activeScreenArray.find(component => isComponentOfType(state.activities.modals, component, type))
     : undefined);
 }
 
 const getActiveSideMenuSides = (state, type) => {
   const rootId = getActiveIdForType(state, LayoutType.SideMenuRoot);
-  return rootId && (getSideMenuChildrenId(state.navigation.root, rootId, type) || (state.navigation.modals.length
-    ? getSideMenuChildrenId(state.navigation.root, rootId, type)
+  return rootId && (getSideMenuChildrenId(state.activities.root, rootId, type) || (state.activities.modals.length
+    ? getSideMenuChildrenId(state.activities.root, rootId, type)
     : undefined));
 }
 
@@ -96,7 +96,7 @@ export const getActiveSideMenuRootId = state => {
  */
 export const getActiveStackArray = state => {
   const stackId = getActiveStackId(state);
-  return getActiveChildrens(state.navigation.root, stackId) || (state.navigation.modals.length
-    ? getActiveChildrens(state.navigation.modals[state.navigation.modals.length - 1], stackId)
+  return getActiveChildrens(state.activities.root, stackId) || (state.activities.modals.length
+    ? getActiveChildrens(state.activities.modals[state.activities.modals.length - 1], stackId)
     : undefined);
 }
