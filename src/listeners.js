@@ -89,16 +89,16 @@ const subscribeToBottomTabEvent = (navigator, store) => {
 const subscribeToScreenDidAppear = (navigator, store) => {
   screenDidAppearEventListener = navigator
     .events()
-    .registerComponentDidAppearListener(({componentId}) => {
-      store.dispatch(screenAppeared({componentId}));
+    .registerComponentDidAppearListener(({componentId, componentName}) => {
+      store.dispatch(screenAppeared({componentId, componentName}));
     })
 }
 
 const subscribeToScreenDisappear = (navigator, store) => {
   screenDisappearEventListener = navigator
     .events()
-    .registerComponentDidDisappearListener(({componentId}) => {
-      store.dispatch(screenDisappeared({componentId}));
+    .registerComponentDidDisappearListener(({componentId, componentName}) => {
+      store.dispatch(screenDisappeared({componentId, componentName}));
     })
 }
 
