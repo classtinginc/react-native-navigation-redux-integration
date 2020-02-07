@@ -55,12 +55,23 @@ const subscribeCommandListener = (navigator, store) => {
           return store.dispatch(stackRootSet({ componentId, layout }));
         }
         case Events.mergeOptions:
-        {
-          if (params && params.options && params.options.bottomTabs && (params.options.bottomTabs.currentTabIndex !== undefined || params.options.topTabs.currentTabIndex !== undefined)) {
-            return store.dispatch(tabChangedWithMergeOptions({ componentId: params.componentId, currentTabIndex: params.options.bottomTabs.currentTabIndex }));
+          {
+            if (params && params.options && params.options.bottomTabs && params.options.bottomTabs.currentTabIndex !== undefined) {
+              const data = {
+                unselectedTabIndex:params.options.bottomTabs.beforeTabIndex,
+                selectedTabIndex:params.options.bottomTabs.currentTabIndex
+              }
+              return store.dispatch(tabChanged(data));
+            }
+            if (params && params.options && params.options.topTabs && params.options.topTabs.currentTabIndex !== undefined) {
+              const data = {
+                unselectedTabIndex:params.options.topTabs.beforeTabIndex,
+                selectedTabIndex:params.options.topTabs.currentTabIndex
+              }
+              return store.dispatch(tabChanged(data));
+            }
+            return;
           }
-          return;
-        }
         case Events.showModal:
           const modalLayout = processLayout(params.layout);
           return store.dispatch(modalShown(modalLayout));
